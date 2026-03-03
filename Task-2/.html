@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neon Stopwatch</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* LOCK PAGE */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: 0.35s;
+}
+
+body.light {
+    background: radial-gradient(circle at top, #eef1f6, #cfd6e6);
+    color: #111;
+}
+
+/* FIXED CONTAINER */
+.container {
+    width: 420px;
+    height: 640px;                 /* 🔒 HARD LOCK */
+    padding: 30px;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.45);
+    text-align: center;
+    position: relative;
+
+    display: grid;
+    grid-template-rows:
+        auto    /* title */
+        auto    /* dial */
+        auto    /* time */
+        auto    /* buttons */
+        1fr;    /* laps (absorbs growth) */
+}
+
+body.light .container {
+    background: rgba(255,255,255,0.65);
+}
+
+/* Title */
+.title {
+    font-size: 22px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px cyan;
+}
+
+/* Toggle */
+.toggle {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.75;
+    user-select: none;
+}
+
+/* Dial */
+.dial {
+    margin: 15px auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Neon pulse ring */
+.dial::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid cyan;
+    box-shadow: 0 0 25px cyan;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.06); opacity: 0.35; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* Tick markers */
+.tick {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: rgba(255,255,255,0.6);
+    top: 5px;
+    left: 50%;
+    transform-origin: center 105px;
+}
+
+body.light .tick {
+    background: rgba(0,0,0,0.4);
+}
+
+/* Needle */
+.needle {
+    position: absolute;
+    width: 4px;
+    height: 90px;
+    background: linear-gradient(to top, transparent, cyan);
+    transform-origin: bottom center;
+    bottom: 50%;
+    left: 50%;
+    translate: -50% 0;
+    border-radius: 10px;
+    box-shadow: 0 0 15px cyan;
+}
+
+.center-dot {
+    width: 14px;
+    height: 14px;
+    background: cyan;
+    border-radius: 50%;
+    box-shadow: 0 0 15px cyan;
+    position: absolute;
+}
+
+/* Time */
+.time {
+    font-size: 36px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px rgba(0,255,255,0.7);
+}
+
+/* Buttons */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 12px 0;
+}
+
+button {
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.08);
+    color: inherit;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px cyan;
+}
+
+/* 🔒 LAPS LOCKED */
+.laps {
+    overflow-y: auto;
+    padding-top: 10px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.lap-item {
+    margin: 4px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 class="title">STOPWATCH</h1>
+    <div class="toggle" id="toggle" onclick="toggleMode()">🌙</div>
+
+    <div class="dial" id="dial">
+        <div class="needle" id="needle"></div>
+        <div class="center-dot"></div>
+    </div>
+
+    <div class="time" id="display">00:00:00</div>
+
+    <div class="buttons">
+        <button onclick="start()">START</button>
+        <button onclick="pause()">PAUSE</button>
+        <button onclick="reset()">RESET</button>
+        <button onclick="lap()">LAP</button>
+    </div>
+
+    <div class="laps" id="laps"></div>
+</div>
+
+<script>
+let startTime = 0;
+let elapsed = 0;
+let timer = null;
+let lapCounter = 0;
+
+/* ticks */
+const dial = document.getElementById("dial");
+for (let i = 0; i < 60; i++) {
+    const tick = document.createElement("div");
+    tick.className = "tick";
+    tick.style.transform = `rotate(${i * 6}deg) translateX(-50%)`;
+    dial.appendChild(tick);
+}
+
+function pad(n) {
+    return n.toString().padStart(2, "0");
+}
+
+function update() {
+    elapsed = Date.now() - startTime;
+
+    const ms = Math.floor((elapsed / 10) % 100);
+    const sec = Math.floor((elapsed / 1000) % 60);
+    const min = Math.floor((elapsed / 60000) % 60);
+
+    display.textContent = `${pad(min)}:${pad(sec)}:${pad(ms)}`;
+
+    const deg = (elapsed / 1000) * 6;
+    needle.style.transform = `rotate(${deg}deg) translateX(-50%)`;
+}
+
+function start() {
+    if (timer) return;
+    startTime = Date.now() - elapsed;
+    timer = setInterval(update, 10);
+}
+
+function pause() {
+    clearInterval(timer);
+    timer = null;
+}
+
+function reset() {
+    pause();
+    elapsed = 0;
+    lapCounter = 0;
+    display.textContent = "00:00:00";
+    needle.style.transform = "rotate(0deg) translateX(-50%)";
+    laps.innerHTML = "";
+}
+
+function lap() {
+    if (!elapsed) return;
+    lapCounter++;
+    const item = document.createElement("div");
+    item.className = "lap-item";
+    item.textContent = `Lap ${lapCounter} — ${display.textContent}`;
+    laps.prepend(item);
+}
+
+function toggleMode() {
+    document.body.classList.toggle("light");
+    toggle.textContent = document.body.classList.contains("light") ? "🌙" : "☀";
+}
+
+const display = document.getElementById("display");
+const needle = document.getElementById("needle");
+const laps = document.getElementById("laps");
+const toggle = document.getElementById("toggle");
+</script>
+
+</body>
+</html>

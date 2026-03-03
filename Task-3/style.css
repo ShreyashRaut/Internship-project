@@ -1,0 +1,120 @@
+:root{
+    --bg-dark: linear-gradient(135deg,#141e30,#243b55);
+    --bg-light: linear-gradient(135deg,#e0eafc,#cfdef3);
+    --card-dark: rgba(255,255,255,0.08);
+    --card-light: rgba(255,255,255,0.6);
+    --text-dark: white;
+    --text-light: #111;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:var(--bg-dark);
+    color:var(--text-dark);
+    transition:0.4s;
+}
+
+body.light{
+    background:var(--bg-light);
+    color:var(--text-light);
+}
+
+.container{
+    backdrop-filter:blur(25px);
+    background:var(--card-dark);
+    padding:30px;
+    border-radius:25px;
+    width:400px;
+    text-align:center;
+    box-shadow:0 25px 50px rgba(0,0,0,0.4);
+    transition:0.4s;
+}
+
+body.light .container{
+    background:var(--card-light);
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.scoreboard{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(3,110px);
+    grid-template-rows:repeat(3,110px);
+    gap:12px;
+    margin:auto;
+}
+
+.cell{
+    background:rgba(255,255,255,0.1);
+    border-radius:20px;
+    font-size:42px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.cell:hover{
+    transform:scale(1.07);
+    background:rgba(255,255,255,0.2);
+}
+
+.win{
+    background:#00ffcc !important;
+    color:black;
+    box-shadow:0 0 20px #00ffcc;
+}
+
+.controls{
+    margin-top:20px;
+}
+
+select,button{
+    padding:8px 12px;
+    border-radius:12px;
+    border:none;
+    margin:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button{
+    background:#00c6ff;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.toggle{
+    cursor:pointer;
+    font-size:18px;
+}
+
+.status{
+    margin-top:15px;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Tic Tac Toe</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <h2>Tic Tac Toe</h2>
+        <div class="toggle" id="themeToggle">🌙</div>
+    </div>
+
+    <div class="scoreboard">
+        <div>X: <span id="scoreX">0</span></div>
+        <div>O: <span id="scoreO">0</span></div>
+    </div>
+
+    <div class="mode-buttons">
+        <button id="twoPlayerBtn">Two Player</button>
+        <button id="aiBtn">VS AI</button>
+    </div>
+
+    <div class="controls">
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <button id="restartBtn">Restart</button>
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <div class="status" id="status">Select Mode</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
