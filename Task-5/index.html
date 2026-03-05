@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Beautiful real-time weather app"/>
+  <title>Weather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="weather-default" id="body">
+
+  <div class="bg-wrap" id="bgLayer">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="vignette"></div>
+  </div>
+
+  <main class="app" id="appShell">
+
+    <section class="search-section">
+      <div class="search-pill" id="searchPill">
+        <svg class="search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="cityInput" class="search-input" placeholder="Search any city in the world…" autocomplete="off" aria-label="City name"/>
+        <button class="btn-geo" id="geoBtn" title="Use my location" aria-label="Detect my location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/><circle cx="12" cy="12" r="7" opacity=".25"/>
+          </svg>
+        </button>
+        <button class="btn-search" id="searchBtn" aria-label="Search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+      <p class="err" id="errorMsg" role="alert" aria-live="polite"></p>
+    </section>
+
+    <div class="loader-wrap" id="spinnerWrap" hidden>
+      <div class="loader">
+        <div class="loader-ring r1"></div>
+        <div class="loader-ring r2"></div>
+        <div class="loader-ring r3"></div>
+        <span class="loader-emoji">🌍</span>
+      </div>
+      <p class="loader-txt">Reading the skies…</p>
+    </div>
+
+    <div class="empty" id="emptyState">
+      <div class="empty-art">
+        <div class="empty-sun">☀</div>
+        <div class="empty-cloud c1">⛅</div>
+        <div class="empty-cloud c2">🌤</div>
+      </div>
+      <h2 class="empty-h">What's the weather like?</h2>
+      <p class="empty-p">Search a city or tap the location button to find out.</p>
+    </div>
+
+    <article class="card" id="weatherCard" hidden>
+      <div class="card-shimmer"></div>
+
+      <div class="row-top">
+        <div>
+          <h1 class="city" id="cityName">—</h1>
+          <p class="sub-info" id="countryDate">—</p>
+        </div>
+        <div class="clock-box">
+          <span class="clock" id="localTime">—</span>
+          <span class="clock-label">local time</span>
+        </div>
+      </div>
+
+      <div class="row-main">
+        <div class="icon-box">
+          <div class="icon-glow" id="iconGlow"></div>
+          <img id="weatherIcon" src="" alt="weather" class="w-icon"/>
+          <p class="w-desc" id="weatherDesc">—</p>
+        </div>
+        <div class="temp-box">
+          <div class="temp-num" id="tempValue">—</div>
+          <div class="unit-switch" id="unitToggle">
+            <button class="u-btn active" data-unit="metric" aria-pressed="true">°C</button>
+            <div class="u-sep"></div>
+            <button class="u-btn" data-unit="imperial" aria-pressed="false">°F</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stats" id="statsGrid">
+        <div class="stat"><div class="stat-icon-wrap feels">🌡️</div><div><p class="stat-lbl">Feels Like</p><p class="stat-val" id="feelsLike">—</p></div></div>
+        <div class="stat"><div class="stat-icon-wrap humid">💧</div><div><p class="stat-lbl">Humidity</p><p class="stat-val" id="humidity">—</p></div></div>
+        <div class="stat"><div class="stat-icon-wrap wind">🌬️</div><div><p class="stat-lbl">Wind Speed</p><p class="stat-val" id="windSpeed">—</p></div></div>
+        <div class="stat"><div class="stat-icon-wrap press">🔵</div><div><p class="stat-lbl">Pressure</p><p class="stat-val" id="pressure">—</p></div></div>
+        <div class="stat"><div class="stat-icon-wrap vis">👁️</div><div><p class="stat-lbl">Visibility</p><p class="stat-val" id="visibility">—</p></div></div>
+        <div class="stat"><div class="stat-icon-wrap sun">🌅</div><div><p class="stat-lbl">Rise / Set</p><p class="stat-val" id="sunriseSunset">—</p></div></div>
+      </div>
+
+      <div class="card-foot">
+        <span id="lastUpdated"></span>
+        <span class="owm-credit">OpenWeatherMap</span>
+      </div>
+    </article>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

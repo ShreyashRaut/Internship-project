@@ -13,7 +13,7 @@ window.addEventListener("scroll", () => {
     navbar.style.background = `rgb(${value}, ${value}, ${value})`;
 
     const links = document.querySelectorAll(".nav-links a");
-    const logo = document.querySelector(".logo");
+    const logo = document.querySelector(".brand");
 
     if (progress > 0.5) {
         links.forEach(link => link.style.color = "white");
@@ -24,7 +24,6 @@ window.addEventListener("scroll", () => {
     }
 });
 
-
 /* SCROLL REVEAL */
 const reveals = document.querySelectorAll(".reveal");
 
@@ -33,16 +32,12 @@ function revealOnScroll() {
 
     reveals.forEach(section => {
         const top = section.getBoundingClientRect().top;
-
-        if (top < trigger) {
-            section.classList.add("active");
-        }
+        if (top < trigger) section.classList.add("active");
     });
 }
 
 window.addEventListener("scroll", revealOnScroll);
 revealOnScroll();
-
 
 /* CURSOR GLOW */
 const glow = document.getElementById("cursor-glow");
@@ -51,7 +46,6 @@ window.addEventListener("mousemove", (e) => {
     glow.style.left = e.clientX + "px";
     glow.style.top = e.clientY + "px";
 });
-
 
 /* PARTICLES */
 const canvas = document.getElementById("particles");
@@ -84,7 +78,7 @@ function animateParticles() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0,255,255,0.5)";
+        ctx.fillStyle = "rgba(0,170,255,0.5)";
         ctx.fill();
     });
 
@@ -92,8 +86,3 @@ function animateParticles() {
 }
 
 animateParticles();
-
-window.addEventListener("resize", () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});

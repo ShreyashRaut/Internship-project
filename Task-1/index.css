@@ -6,6 +6,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: #050505;
     color: white;
@@ -23,13 +27,13 @@ body {
 /* CURSOR GLOW */
 #cursor-glow {
     position: fixed;
-    width: 28px;
-    height: 28px;
+    width: 18px;
+    height: 18px;
     background: cyan;
-    border-radius: 70%;
+    border-radius: 50%;
     pointer-events: none;
-    filter: blur(24px);
-    opacity: 0.8;
+    filter: blur(14px);
+    opacity: 0.5;
     z-index: 9999;
     transform: translate(-50%, -50%);
 }
@@ -39,24 +43,34 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 20px 60px;
+    padding: 18px 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    background: rgba(255, 255, 255, 1);
+    background: white;
     border-bottom: 2px solid cyan;
-    box-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
-
     z-index: 1000;
 }
 
+/* LOGO */
 .logo {
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: black;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
+
+.logo img {
+    width: 38px;
+    height: 38px;
+}
+
+.brand {
+    font-size: 30px;
+    font-weight: 700;
+    color: black;
+    letter-spacing: 1.2px;
+}
+
 
 /* NAV LINKS */
 .nav-links {
@@ -69,8 +83,6 @@ nav {
     text-decoration: none;
     color: black;
     font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
     transition: 0.3s;
 }
 
@@ -86,96 +98,82 @@ nav {
     justify-content: center;
     align-items: center;
     text-align: center;
-
     padding: 0 20px;
 }
 
 .hero h1 {
     font-size: 56px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 18px;
-
     color: cyan;
-    text-shadow:
-        0 0 6px rgba(0, 255, 255, 0.6),
-        0 0 14px rgba(0, 255, 255, 0.25);
+    margin-bottom: 10px;
 }
 
 .hero p {
-    font-size: 18px;
-    opacity: 0.75;
-    margin-bottom: 28px;
-    letter-spacing: 0.3px;
+    font-size: 20px;
+    opacity: 0.8;
+    margin-bottom: 25px;
+    height: 30px;
 }
 
 .hero button {
     padding: 12px 28px;
-    border: 1px solid cyan;
+    border: 1px solid #00aaff;
     background: transparent;
-    color: cyan;
+    color: #00aaff;
     font-size: 14px;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.35s ease;
 }
 
+/* BMW BLUE GLOW EFFECT */
 .hero button:hover {
-    background: cyan;
+    background: #00aaff;
     color: black;
+
+    box-shadow:
+        0 0 8px rgba(0, 170, 255, 0.6),
+        0 0 18px rgba(0, 170, 255, 0.35);
+
+    transform: translateY(-2px);
 }
 
-/* CONTENT SECTIONS */
+/* CONTENT */
 .content {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     text-align: center;
-
-    padding: 120px 20px 60px 20px;
     max-width: 900px;
     margin: auto;
+    padding: 120px 20px;
 }
 
 .content h2 {
     font-size: 40px;
-    margin-bottom: 22px;
     color: cyan;
-    letter-spacing: 0.4px;
-
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.35);
+    margin-bottom: 20px;
 }
 
 .content p {
     font-size: 17px;
-    line-height: 1.8;
     opacity: 0.7;
-    max-width: 720px;
+    line-height: 1.8;
 }
 
-/* EMAIL STYLE */
-.email {
-    margin-top: 18px;
-    font-size: 16px;
-    color: cyan;
-    opacity: 0.9;
-}
-
-/* CLICKABLE EMAIL LINK */
+/* EMAIL */
 .email-link {
+    display: inline-block;
+    margin-top: 20px;
     color: cyan;
     text-decoration: none;
-    transition: 0.3s;
 }
 
 .email-link:hover {
-    text-shadow: 0 0 6px cyan;
+    text-shadow: 0 0 8px cyan;
 }
 
-
-/* SCROLL REVEAL */
+/* REVEAL */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -185,4 +183,30 @@ nav {
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
+}
+/* SUBTLE TEXT GLOW (PREMIUM LOOK) */
+
+h1, h2, h3 {
+    text-shadow: 0 0 8px rgba(0, 170, 255, 0.35);
+}
+
+p {
+    text-shadow: 0 0 6px rgba(0, 170, 255, 0.15);
+}
+
+.nav-links a {
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Optional: stronger glow on section titles */
+.content h2 {
+    text-shadow:
+        0 0 10px rgba(0, 170, 255, 0.45),
+        0 0 20px rgba(0, 170, 255, 0.15);
+}
+
+.bmw-inline-logo {
+    height: 1.4em;          /* adjust size here */
+    vertical-align: middle;
+    margin-left: 0;
 }
